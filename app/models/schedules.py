@@ -13,3 +13,4 @@ class Schedule(Base):
 
     patient = relationship("Patient", back_populates="schedules")
     course = relationship("Course")
+
