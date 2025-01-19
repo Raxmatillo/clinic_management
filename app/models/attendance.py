@@ -10,4 +10,4 @@ class Attendance(Base):
     attendance_status = Column(String, nullable=False)
     note = Column(String, nullable=True)
 
-    schedule = relationship("Schedule")
+    schedule = relationship("Schedule", back_populates="attendances")

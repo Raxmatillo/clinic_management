@@ -36,8 +36,8 @@ class NotificationSchema(BaseModel):
     )
 
     class Config:
-        orm_mode = True
-        schema_extra = {
+        from_attributes = True
+        json_schema_extra = {
             "example": {
                 "notification_id": 1,
                 "patient_id": 101,

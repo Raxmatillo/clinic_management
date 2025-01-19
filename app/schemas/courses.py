@@ -1,4 +1,7 @@
+from typing import Optional, List
 from pydantic import BaseModel, Field
+
+
 
 class CoursesSchemas(BaseModel):
     course_name: str = Field(
@@ -27,10 +30,23 @@ class CoursesSchemas(BaseModel):
     )
 
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "course_name": "Advanced Physiotherapy",
                 "course_duration": 10,
                 "interval_duration": 30
             }
         }
+
+class ShowCoursesSchemas(CoursesSchemas):
+    class Config:
+        from_attributes=True
+
+
+class UpdateCourseSchema(BaseModel):
+    course_name: Optional[str] = Field(None, example="1-kurs", title="Kurs nomi")
+    course_duration: Optional[int] = Field(..., ge=1, le=10, title="Kurs davomi (kun)")
+    course_interval: Optional[int] = Field(..., ge=1, le=30, title="Kurslar oralig'i (kun)")
+
+    class Config:
+        from_attributes=True

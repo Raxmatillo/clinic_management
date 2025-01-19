@@ -41,8 +41,8 @@ class PaymentSchema(BaseModel):
     )
 
     class Config:
-        orm_mode = True
-        schema_extra = {
+        from_attributes = True
+        json_schema_extra = {
             "example": {
                 "payment_id": 1,
                 "patient_id": 123,

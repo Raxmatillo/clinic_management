@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, ForeignKey, Date
+from sqlalchemy import Column, Integer, ForeignKey, Date, Table
 from sqlalchemy.orm import relationship
 from app.models.base import Base
 
@@ -13,4 +13,6 @@ class Schedule(Base):
 
     patient = relationship("Patient", back_populates="schedules")
     course = relationship("Course")
+
+    attendances = relationship("Attendance", back_populates="schedule", cascade="all, delete-orphan")
 

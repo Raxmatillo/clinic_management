@@ -1,19 +1,10 @@
 from pydantic import BaseModel, Field
-from typing import Optional
+from typing import Optional, List
+
+from .schedules import ScheludePatientsSchema, ScheduleSchema
+
 
 class AttendanceSchema(BaseModel):
-    attendance_id: int = Field(
-        ...,
-        title="Attendance ID",
-        description="Unique identifier for the attendance entry.",
-        example=1
-    )
-    schedule_id: int = Field(
-        ...,
-        title="Schedule ID",
-        description="Unique identifier linking this attendance entry to a schedule.",
-        example=101
-    )
     attendance_status: str = Field(
         ...,
         title="Attendance Status",
@@ -31,12 +22,16 @@ class AttendanceSchema(BaseModel):
     )
 
     class Config:
-        orm_mode = True
-        schema_extra = {
+        from_attributes = True
+        json_schema_extra = {
             "example": {
-                "attendance_id": 1,
-                "schedule_id": 101,
                 "attendance_status": "Present",
                 "note": "Attended all sessions on time."
             }
         }
+
+class ShowAttendanceSchemas(AttendanceSchema):
+    # schedule: ScheduleSchema = []
+
+    class Config:
+        from_attributes=True

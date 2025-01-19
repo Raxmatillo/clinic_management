@@ -1,4 +1,6 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Table, ForeignKey
+from sqlalchemy.orm import relationship
+
 from app.models.base import Base
 
 class Course(Base):
@@ -8,3 +10,6 @@ class Course(Base):
     course_name = Column(String, nullable=False)
     course_duration = Column(Integer, nullable=False)
     interval_duration = Column(Integer, nullable=False)
+
+
+    patients = relationship("Patient", secondary="patient_courses", back_populates="courses")

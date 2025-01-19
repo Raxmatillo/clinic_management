@@ -1,5 +1,8 @@
+from typing import List, Optional
 from pydantic import BaseModel, Field, EmailStr
 from datetime import date, datetime
+
+from .courses import CoursesSchemas
 
 class PatientSchema(BaseModel):
     full_name: str = Field(
@@ -32,8 +35,8 @@ class PatientSchema(BaseModel):
     )
 
     class Config:
-        orm_mode = True
-        schema_extra = {
+        from_attributes = True
+        json_schema_extra = {
             "example": {
                 "patient_id": 1,
                 "full_name": "John Doe",
@@ -49,3 +52,17 @@ class ShowPatients(BaseModel):
     full_name: str
     birth_date: datetime
     phone_number: str
+    courses: List[CoursesSchemas] = []
+
+    class Config():
+        from_attribs=True
+
+
+class UpdatePatientSchema(BaseModel):
+    full_name: Optional[str] = Field(None, example="Rakhatullo Shermatov")
+    birth_date: Optional[date] = Field(None, example="1985-07-18")
+    phone_number: Optional[str] = Field(None, example="+998901234567")
+    status: Optional[str] = Field(None, example="active")
+
+    class Config:
+        from_attributes = True

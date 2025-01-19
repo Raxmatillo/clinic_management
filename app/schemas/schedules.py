@@ -1,19 +1,10 @@
 from pydantic import BaseModel, Field
 from datetime import date
 
+from .courses import ShowCoursesSchemas
+from .patients import ShowPatients
+
 class ScheduleSchema(BaseModel):
-    schedule_id: int = Field(
-        ...,
-        title="Schedule ID",
-        description="Unique identifier for the schedule entry.",
-        example=1
-    )
-    patient_id: int = Field(
-        ...,
-        title="Patient ID",
-        description="Unique identifier for the patient linked to the schedule.",
-        example=101
-    )
     course_id: int = Field(
         ...,
         title="Course ID",
@@ -35,13 +26,46 @@ class ScheduleSchema(BaseModel):
     )
 
     class Config:
-        orm_mode = True
-        schema_extra = {
+        from_attributes = True
+        json_schem_extra = {
             "example": {
-                "schedule_id": 1,
-                "patient_id": 101,
                 "course_id": 202,
                 "course_day": 5,
                 "attendance_date": "2025-01-18"
             }
         }
+
+class ScheludeCoursesSchemas(BaseModel):
+    course_id: int
+    course_day: int
+    attendance_date: date
+    course: ShowCoursesSchemas
+    class Config:
+        from_attributes=True
+
+class ScheludePatientsSchema(BaseModel):
+    course_day: int
+    attendance_date: date
+    patient: ShowPatients  # 'PatientSchema' o'rnatilgan
+
+    class Config:
+        from_attributes = True
+
+
+class UpdateScheduleSchema(BaseModel):
+    course_day: int = Field(
+        ...,
+        title="Kurs kuni",
+        description="The specific day of the course for this schedule entry (e.g., 1 for the first day, 10 for the last day).",
+        ge=1,
+        example=5
+    )
+    attendance_date: date = Field(
+        ...,
+        title="Davomat kuni",
+        description="The date when the patient attended the course.",
+        example="2025-01-18"
+    )
+
+    class Config:
+        from_attributes: True
